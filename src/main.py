@@ -1,9 +1,13 @@
+import logging
+
 from fastapi import FastAPI
+
 from src.routes import routes
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("uvicorn.error")
 
 app = FastAPI()
 
-
-# if __name__ == "__main__":
-print("running the fastapi server")
+logger.info("running the fastapi server")
 app.include_router(routes.router)
