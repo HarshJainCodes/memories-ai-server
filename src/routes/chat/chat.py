@@ -1,6 +1,10 @@
 import logging
-from fastapi import APIRouter
+from typing import Annotated
 
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.database.db import get_db
 
 router = APIRouter()
 
@@ -8,11 +12,8 @@ logger = logging.getLogger("uvicorn.error")
 
 
 @router.get("/chat")
-def chat_endpoint():
+async def chat_endpoint(db: Annotated[AsyncSession, Depends(get_db)]):
 
-	logger.error("request to chat endpoint appeared")
+	await db.commit()
 
-	from src.database.db import get_db
-
-	get_db()
 	return "This is the chat router v2"

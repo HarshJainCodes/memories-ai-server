@@ -7,4 +7,4 @@ router = APIRouter()
 def upload_router():
 	print("request to upload endpoint appeared")
 
-	return "this is the upload router"
+	return "this is the upload router v2"

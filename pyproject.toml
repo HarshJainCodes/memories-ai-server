@@ -5,6 +5,7 @@ description = "Travel Memories AI orchestrator"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "aioodbc>=0.5.0",
     "dotenv>=0.9.9",
     "fastapi>=0.137.2",
     "pyodbc>=5.3.0",
@@ -17,6 +18,10 @@ dev = ["ruff>=0.15.17"]
 
 [tool.ruff.lint]
 extend-select = [
+    "I",
+    "E",
+    "UP",
+    "B",
     "FAST001",
     "FAST002",
     "FAST003",
@@ -25,10 +30,6 @@ extend-select = [
     "B007",    # Loop control variable {name} not used within loop body
     "B012",    # {name} inside finally blocks cause exceptions to be silenced
 ]
-
-[tool.ruff.lint.isort]
-relative-imports-order = "closest-to-furthest"
-from-first = true
 
 [tool.ruff.format]
 indent-style = "tab"

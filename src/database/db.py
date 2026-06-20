@@ -1,19 +1,8 @@
-import logging
-import pyodbc
 import os
-
-from sqlalchemy import create_engine, text
+from collections.abc import AsyncGenerator
 from urllib.parse import quote_plus
 
-from dotenv import load_dotenv
-
-load_dotenv()
-
-logger = logging.getLogger("sqlalchemy.engine")
-
-logger.setLevel(logging.INFO)
-logger.info(f"ODBC DRIVERS: {pyodbc.drivers()}")
-
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 connection_string = (
 	"DRIVER={ODBC Driver 18 for SQL Server};"
@@ -25,13 +14,12 @@ connection_string = (
 	"TrustServerCertificate=no;"
 )
 
-engine = create_engine(f"mssql+pyodbc:///?odbc_connect={quote_plus(connection_string)}")
+engine = create_async_engine(
+	f"mssql+aioodbc:///?odbc_connect={quote_plus(connection_string)}"
+)
+async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 
-def get_db():
-	with engine.connect() as connection:
-		result = connection.execute(
-			text("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES")
-		)
-		print(result.fetchone())
-	logger.info("this is the database")
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
+	async with async_session() as session:
+		yield session
