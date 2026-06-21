@@ -10,3 +10,5 @@ wheels/
 .venv
 build_commands.txt
 .env
+localhost-key.pem
+localhost.pem
