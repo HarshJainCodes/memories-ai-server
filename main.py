@@ -1,0 +1,18 @@
+import os
+import logging
+
+import uvicorn
+from dotenv import load_dotenv
+
+load_dotenv()
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("uvicorn.error")
+
+
+if __name__ == "__main__":
+	if os.getenv("ENV") == "DEVELOPMENT":
+        logger.info("Running in Development Mode")
+        uvicorn.run("src.main:app", host="0.0.0.0", port=8000, reload=True)
+    else:
+    	uvicorn.run("src.main:app", host="0.0.0.0", port=8000)
